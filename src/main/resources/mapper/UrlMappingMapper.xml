@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blues.shorturl.dao.UrlMappingMapper">
+    <resultMap id="BaseResultMap" type="com.blues.shorturl.entity.UrlMapping">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="keyword" jdbcType="VARCHAR" property="keyword"/>
+        <result column="biz_type" jdbcType="VARCHAR" property="bizType"/>
+        <result column="origin_url" jdbcType="VARCHAR" property="originUrl"/>
+        <result column="origin_url_md5" jdbcType="VARCHAR" property="originUrlMd5"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, keyword, biz_type, origin_url, origin_url_md5, description, creator, created_time, 
+    updated_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_url_mapping
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByMd5" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select id,origin_url_md5
+        from t_url_mapping
+        where origin_url_md5 = #{originUrlMd5,jdbcType=VARCHAR}
+      </select>
+    <select id="selectByKeyword" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_url_mapping
+        where keyword = #{keyword,jdbcType=VARCHAR}
+      </select>
+    <select id="selectByCondition" parameterType="com.blues.shorturl.entity.UrlMapping" resultMap="BaseResultMap">
+        select id,keyword,biz_type,origin_url_md5
+        from t_url_mapping
+        where 1=1
+        <if test="keyword != null">
+           and keyword = #{keyword,jdbcType=VARCHAR}
+        </if>
+        <if test="bizType != null">
+            and  biz_type = #{bizType,jdbcType=VARCHAR}
+        </if>
+        <if test="originUrlMd5 != null">
+            and origin_url_md5 = #{originUrlMd5,jdbcType=VARCHAR}
+        </if>
+      </select>
+    <select id="selectByBizType" resultMap="BaseResultMap">
+        select *
+        from t_url_mapping
+        WHERE biz_type IN
+        <foreach collection="list" item="bizType" index="index" open="(" close=")" separator=",">
+            #{bizType}
+        </foreach>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_url_mapping
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.blues.shorturl.entity.UrlMapping"
+            useGeneratedKeys="true">
+    insert into t_url_mapping (keyword, biz_type, origin_url, 
+      origin_url_md5, description, creator, 
+      created_time, updated_time)
+    values (#{keyword,jdbcType=VARCHAR}, #{bizType,jdbcType=VARCHAR}, #{originUrl,jdbcType=VARCHAR}, 
+      #{originUrlMd5,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.blues.shorturl.entity.UrlMapping"
+            useGeneratedKeys="true">
+        insert into t_url_mapping
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="keyword != null">
+                keyword,
+            </if>
+            <if test="bizType != null">
+                biz_type,
+            </if>
+            <if test="originUrl != null">
+                origin_url,
+            </if>
+            <if test="originUrlMd5 != null">
+                origin_url_md5,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="createdTime != null">
+                created_time,
+            </if>
+            <if test="updatedTime != null">
+                updated_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="keyword != null">
+                #{keyword,jdbcType=VARCHAR},
+            </if>
+            <if test="bizType != null">
+                #{bizType,jdbcType=VARCHAR},
+            </if>
+            <if test="originUrl != null">
+                #{originUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="originUrlMd5 != null">
+                #{originUrlMd5,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedTime != null">
+                #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.blues.shorturl.entity.UrlMapping">
+        update t_url_mapping
+        <set>
+            <if test="keyword != null">
+                keyword = #{keyword,jdbcType=VARCHAR},
+            </if>
+            <if test="bizType != null">
+                biz_type = #{bizType,jdbcType=VARCHAR},
+            </if>
+            <if test="originUrl != null">
+                origin_url = #{originUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="originUrlMd5 != null">
+                origin_url_md5 = #{originUrlMd5,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedTime != null">
+                updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.blues.shorturl.entity.UrlMapping">
+    update t_url_mapping
+    set keyword = #{keyword,jdbcType=VARCHAR},
+      biz_type = #{bizType,jdbcType=VARCHAR},
+      origin_url = #{originUrl,jdbcType=VARCHAR},
+      origin_url_md5 = #{originUrlMd5,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
