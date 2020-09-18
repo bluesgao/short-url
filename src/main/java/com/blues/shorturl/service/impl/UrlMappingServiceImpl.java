@@ -39,7 +39,7 @@ public class UrlMappingServiceImpl implements UrlMappingService {
     }
 
     @Override
-    public List<UrlMapping> queryUrlMapping(UrlMapping urlMapping) {
+    public List<UrlMapping> queryByCondition(UrlMapping urlMapping) {
         return urlMappingMapper.selectByCondition(urlMapping);
     }
 

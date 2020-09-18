@@ -7,7 +7,7 @@ import java.util.List;
 public interface UrlMappingService {
     int createUrlMapping(UrlMapping urlMapping);
 
-    List<UrlMapping> queryUrlMapping(UrlMapping urlMapping);
+    List<UrlMapping> queryByCondition(UrlMapping urlMapping);
 
     UrlMapping queryByKeyword(String keyword);
 
