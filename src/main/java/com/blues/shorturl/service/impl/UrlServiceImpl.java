@@ -25,11 +25,10 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
 public class UrlServiceImpl implements UrlService {
-    private ConcurrentHashMap<String, UrlMapping> hotUrlCache = new ConcurrentHashMap<>(1000);
-    private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("loading-hot-url"));
-
     @Resource
     UrlMappingService urlMappingService;
+    private ConcurrentHashMap<String, UrlMapping> hotUrlCache = new ConcurrentHashMap<>(1000);
+    private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("loading-hot-url"));
     @Resource
     private IdGenService idGenService;
     @Value("${short_url_prefix}")

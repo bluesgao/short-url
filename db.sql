@@ -52,7 +52,7 @@ CREATE TABLE `t_url_mapping` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_keyword` (`keyword`) USING BTREE,
   KEY `idx_origin_url_md5`(`origin_url_md5`) USING BTREE,
-  KEY `idx_biz_type_keyword_md5`(`biz_type`, `keyword`,`origin_url_md5`) USING BTREE
+  KEY `idx_biz_type_keyword_md5`(`biz_type`, `keyword`, `origin_url_md5`) USING BTREE
 
 )
   ENGINE = InnoDB

@@ -32,21 +32,21 @@
         <include refid="Base_Column_List"/>
         from t_url_mapping
         where keyword = #{keyword,jdbcType=VARCHAR}
-      </select>
+    </select>
     <select id="selectByCondition" parameterType="com.blues.shorturl.entity.UrlMapping" resultMap="BaseResultMap">
         select id,keyword,biz_type,origin_url_md5
         from t_url_mapping
         where 1=1
         <if test="keyword != null">
-           and keyword = #{keyword,jdbcType=VARCHAR}
+            and keyword = #{keyword,jdbcType=VARCHAR}
         </if>
         <if test="bizType != null">
-            and  biz_type = #{bizType,jdbcType=VARCHAR}
+            and biz_type = #{bizType,jdbcType=VARCHAR}
         </if>
         <if test="originUrlMd5 != null">
             and origin_url_md5 = #{originUrlMd5,jdbcType=VARCHAR}
         </if>
-      </select>
+    </select>
     <select id="selectByBizType" resultMap="BaseResultMap">
         select *
         from t_url_mapping

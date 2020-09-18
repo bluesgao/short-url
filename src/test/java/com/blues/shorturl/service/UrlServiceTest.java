@@ -39,12 +39,12 @@ public class UrlServiceTest {
                 public void run() {
                     for (int i = 0; i < 500; i++) {
                         String shorturl = null;
-                        if (i%3==0){
-                            shorturl = urlService.genShortUrl("kol","http://baidu.com/zc?name=123&&age=111&&activity=1&&tag=" + new Random().nextInt());
-                        }else if(i%5==0){
-                            shorturl = urlService.genShortUrl("activity","http://baidu.com/zc?name=123&&age=111&&activity=1&&tag=" + new Random().nextInt());
-                        }else {
-                            shorturl = urlService.genShortUrl("","http://baidu.com/zc?name=123&&age=111&&activity=1&&tag=" + new Random().nextInt());
+                        if (i % 3 == 0) {
+                            shorturl = urlService.genShortUrl("kol", "http://baidu.com/zc?name=123&&age=111&&activity=1&&tag=" + new Random().nextInt());
+                        } else if (i % 5 == 0) {
+                            shorturl = urlService.genShortUrl("activity", "http://baidu.com/zc?name=123&&age=111&&activity=1&&tag=" + new Random().nextInt());
+                        } else {
+                            shorturl = urlService.genShortUrl("", "http://baidu.com/zc?name=123&&age=111&&activity=1&&tag=" + new Random().nextInt());
                         }
                         log.info("short url:" + shorturl);
                     }
@@ -59,8 +59,8 @@ public class UrlServiceTest {
     }
 
     @Test
-    public void getOriginUrl() throws Exception{
-        log.info("E4D->{}",urlService.getOriginUrl("fID"));
+    public void getOriginUrl() throws Exception {
+        log.info("E4D->{}", urlService.getOriginUrl("fID"));
 
         Thread.sleep(1000 * 150);
     }
