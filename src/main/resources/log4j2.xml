@@ -36,7 +36,7 @@
         <RollingFile name="rolling" fileName="${LOG_HOME}/rolling.log"
                      filePattern="logs/$${date:yyyy-MM}/rolling-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout pattern="${LOG_PATTERN}"/>
-            <SizeBasedTriggeringPolicy size="2MB"/>
+            <SizeBasedTriggeringPolicy size="100MB"/>
         </RollingFile>
     </appenders>
 
