@@ -19,7 +19,16 @@ public class UrlController {
 
     @GetMapping("/genShortUrl.action")
     public String genShortUrl(@RequestParam String bizType, @RequestParam String originUrl) {
-        return urlService.genShortUrl(bizType, originUrl);
+        String shortUrl = null;
+        try {
+            shortUrl = urlService.genShortUrl(bizType, originUrl);
+        } catch (Exception e) {
+            log.error("genShortUrl bizType:{}, originUrl:{},error:{}", bizType, originUrl, e);
+        }
+        if (StringUtils.isEmpty(shortUrl)) {
+            throw new CommonBizException(ResultCodeEnum.GEN_SHORT_URL_ERROR.getCode(), ResultCodeEnum.GEN_SHORT_URL_ERROR.getMsg());
+        }
+        return shortUrl;
     }
 
     @GetMapping("/getOriginUrl.action")
