@@ -29,21 +29,13 @@ public class UrlServiceImpl implements UrlService {
     UrlMappingService urlMappingService;
     private ConcurrentHashMap<String, UrlMapping> hotUrlCache = new ConcurrentHashMap<>(1000);
     private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("loading-hot-url"));
-    @Resource
+    @Resource(name = "snowflakeIdGenServiceImpl")
     private IdGenService idGenService;
     @Value("${short_url_prefix}")
     private String shortUrlPrefix;
 
     @PostConstruct
     private void loadingUrlCache() {
-/*
-        List<UrlMapping> urlMappings = getHotUrlMappings();
-        for (UrlMapping item : urlMappings) {
-            hotUrlCache.put(item.getKeyword(), item);
-        }
-        log.info("hotUrlCache size:{} details:{}", hotUrlCache.size(),JSON.toJSONString(hotUrlCache));
-*/
-
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {

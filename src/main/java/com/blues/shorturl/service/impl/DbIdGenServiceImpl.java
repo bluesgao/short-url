@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 @Slf4j
-public class IdGenServiceImpl implements IdGenService {
+public class DbIdGenServiceImpl implements IdGenService {
     private volatile IdSegment currentIdSegment;
     //private volatile IdSegment nextIdSegment;
     //private volatile IdSegment[] idSegments;//双号段

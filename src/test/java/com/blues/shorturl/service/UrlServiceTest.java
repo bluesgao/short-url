@@ -52,7 +52,7 @@ public class UrlServiceTest {
             });
         }
         //关闭线程池
-        Thread.sleep(1000 * 30);
+        Thread.sleep(1000 * 150);
         //executorService.shutdown();
         stopWatch.stop();
         log.info(stopWatch.prettyPrint());
@@ -60,8 +60,15 @@ public class UrlServiceTest {
 
     @Test
     public void getOriginUrl() throws Exception {
-        log.info("E4D->{}", urlService.getOriginUrl("fID"));
+        stopWatch.start("第一次");
+        log.info("MrVP01Y0vt->{}", urlService.getOriginUrl("MrVP01Y0vt"));
+        stopWatch.stop();
+        log.info(stopWatch.prettyPrint());
+        Thread.sleep(1000 * 10);
 
-        Thread.sleep(1000 * 150);
+        stopWatch.start("第二次");
+        log.info("MrVP01Y0vt->{}", urlService.getOriginUrl("MrVP01Y0vt"));
+        stopWatch.stop();
+        log.info(stopWatch.prettyPrint());
     }
 }
