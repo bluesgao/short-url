@@ -30,7 +30,7 @@ public class UrlServiceImpl implements UrlService {
     @Resource
     UrlMappingService urlMappingService;
     private ConcurrentHashMap<String, UrlMapping> urlCache = new ConcurrentHashMap<>(1000);
-    private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("loading-hot-url"));
+    private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("loading-url"));
     //@Resource(name = "snowflakeIdGenServiceImpl")
     @Resource(name = "dbIdGenServiceImpl")
     private IdGenService idGenService;
