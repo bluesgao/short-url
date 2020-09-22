@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 public class UrlServiceImpl implements UrlService {
     @Resource
     UrlMappingService urlMappingService;
-    private ConcurrentHashMap<String, UrlMapping> hotUrlCache = new ConcurrentHashMap<>(1000);
+    private ConcurrentHashMap<String, UrlMapping> urlCache = new ConcurrentHashMap<>(1000);
     private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("loading-hot-url"));
     //@Resource(name = "snowflakeIdGenServiceImpl")
     @Resource(name = "dbIdGenServiceImpl")
@@ -41,21 +41,21 @@ public class UrlServiceImpl implements UrlService {
     private static long ceiling = 56800235583L;
 
     @PostConstruct
-    private void loadingUrlCache() {
+    private void loadingCache() {
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                List<UrlMapping> urlMappings = getHotUrlMappings();
+                List<UrlMapping> urlMappings = getData();
                 for (UrlMapping item : urlMappings) {
-                    hotUrlCache.put(item.getKeyword(), item);
+                    urlCache.put(item.getKeyword(), item);
                 }
-                log.info("loading-url-cache size:{} details:{}", hotUrlCache.size(), JSON.toJSONString(hotUrlCache));
+                log.info("loading-url-cache size:{} details:{}", urlCache.size(), JSON.toJSONString(urlCache));
 
             }
         }, 0, 60, TimeUnit.SECONDS);
     }
 
-    private List<UrlMapping> getHotUrlMappings() {
+    private List<UrlMapping> getData() {
         List<String> types = new ArrayList<>();
         types.add("kol");
         types.add("activity");
@@ -110,10 +110,10 @@ public class UrlServiceImpl implements UrlService {
             return null;
         }
         UrlMapping urlMapping = null;
-        if (hotUrlCache.containsKey(keyword.trim())) {
-            urlMapping = hotUrlCache.get(keyword.trim());
+        if (urlCache.containsKey(keyword.trim())) {
+            urlMapping = urlCache.get(keyword.trim());
             if (urlMapping != null && !StringUtils.isEmpty(urlMapping.getOriginUrl())) {
-                log.info("hotUrlCache keyword:{},urlMapping:{}", keyword, JSON.toJSONString(urlMapping));
+                log.info("urlCache keyword:{},urlMapping:{}", keyword, JSON.toJSONString(urlMapping));
                 return urlMapping.getOriginUrl();
             }
         }
@@ -121,7 +121,7 @@ public class UrlServiceImpl implements UrlService {
         urlMapping = urlMappingService.queryByKeyword(keyword);
         if (urlMapping != null && !StringUtils.isEmpty(urlMapping.getOriginUrl())) {
             if (!urlMapping.getBizType().equals("normal")) {
-                hotUrlCache.put(urlMapping.getKeyword(), urlMapping);
+                urlCache.put(urlMapping.getKeyword(), urlMapping);
             }
             return urlMapping.getOriginUrl();
         }
