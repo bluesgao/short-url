@@ -2,6 +2,7 @@ package com.blues.shorturl.api;
 
 import com.blues.shorturl.common.CommonBizException;
 import com.blues.shorturl.common.ResultCodeEnum;
+import com.blues.shorturl.service.AccessControlService;
 import com.blues.shorturl.service.UrlService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -17,9 +18,19 @@ public class UrlController {
     @Resource
     private UrlService urlService;
 
+    @Resource
+    private AccessControlService aclService;
+
     @GetMapping("/genShortUrl.action")
-    public String genShortUrl(@RequestParam String bizType, @RequestParam String originUrl) {
+    public String genShortUrl(@RequestParam String bizType, @RequestParam String token, @RequestParam String originUrl) {
+        log.info("bizType:{}, token:{},originUrl:{}", bizType, token, originUrl);
+
         String shortUrl = null;
+
+        if (aclService.canVisit(bizType, token)) {
+            throw new CommonBizException(ResultCodeEnum.TOKEN_ERR.getCode(), ResultCodeEnum.TOKEN_ERR.getMsg());
+        }
+
         try {
             shortUrl = urlService.genShortUrl(bizType, originUrl);
         } catch (Exception e) {
@@ -32,8 +43,13 @@ public class UrlController {
     }
 
     @GetMapping("/getOriginUrl.action")
-    public String getOriginUrl(@RequestParam String keyword) {
+    public String getOriginUrl(@RequestParam String bizType, @RequestParam String token, @RequestParam String keyword) {
+        log.info("bizType:{}, token:{},keyword:{}", bizType, token, keyword);
+
         String originUrl = null;
+        if (aclService.canVisit(bizType, token)) {
+            throw new CommonBizException(ResultCodeEnum.TOKEN_ERR.getCode(), ResultCodeEnum.TOKEN_ERR.getMsg());
+        }
         try {
             originUrl = urlService.getOriginUrl(keyword);
         } catch (Exception e) {

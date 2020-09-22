@@ -7,6 +7,7 @@ import com.blues.shorturl.service.AccessControlService;
 import com.blues.shorturl.util.NamedThreadFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -32,7 +33,7 @@ public class AccessControlServiceImpl implements AccessControlService {
     private AccessControlDao accessControlDao;
 
     @PostConstruct
-    private void loadingAclCache() {
+    private void loadingCache() {
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
@@ -53,6 +54,10 @@ public class AccessControlServiceImpl implements AccessControlService {
 
     @Override
     public boolean canVisit(String bizType, String token) {
-        return false;
+        if (StringUtils.isEmpty(bizType) || StringUtils.isEmpty(token)) {
+            return false;
+        }
+        String tempToken = aclCache.get(bizType);
+        return (tempToken != null && tempToken.equals(token));
     }
 }
