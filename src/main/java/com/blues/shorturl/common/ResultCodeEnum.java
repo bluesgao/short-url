@@ -6,10 +6,10 @@ public enum ResultCodeEnum {
     SUCCESS(0, "成功"),
     GET_ORIGIN_URL_ERROR(100001, "获取原始url失败"),
     ORIGIN_URL_NOT_EXIST(100002, "原始url不存在"),
-    KEYWORD_NOT_EXIST(100003, "短码不存在"),
-    GEN_SHORT_URL_ERROR(100004, "生成短码失败"),
-    ID_LIMIT_ERROR(100005, "ID超过限制[916132832,56800235583]"),
-    TOKEN_ERR(100006, "token错误,无访问权限"),
+    KEYWORD_NOT_EXIST(200001, "短码不存在"),
+    GEN_SHORT_URL_ERROR(200002, "生成短码失败"),
+    ID_LIMIT_ERROR(300001, "ID超过限制[916132832,56800235583]"),
+    TOKEN_ERR(400001, "token错误,无访问权限"),
     ;
 
     private Integer code;
