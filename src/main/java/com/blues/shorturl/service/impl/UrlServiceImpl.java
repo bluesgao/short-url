@@ -1,6 +1,8 @@
 package com.blues.shorturl.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.blues.shorturl.common.CommonBizException;
+import com.blues.shorturl.common.ResultCodeEnum;
 import com.blues.shorturl.entity.UrlMapping;
 import com.blues.shorturl.service.IdGenService;
 import com.blues.shorturl.service.UrlMappingService;
@@ -29,10 +31,14 @@ public class UrlServiceImpl implements UrlService {
     UrlMappingService urlMappingService;
     private ConcurrentHashMap<String, UrlMapping> hotUrlCache = new ConcurrentHashMap<>(1000);
     private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("loading-hot-url"));
-    @Resource(name = "snowflakeIdGenServiceImpl")
+    //@Resource(name = "snowflakeIdGenServiceImpl")
+    @Resource(name = "dbIdGenServiceImpl")
     private IdGenService idGenService;
     @Value("${short_url_prefix}")
     private String shortUrlPrefix;
+
+    private static long floor = 916132832L;
+    private static long ceiling = 56800235583L;
 
     @PostConstruct
     private void loadingUrlCache() {
@@ -70,6 +76,11 @@ public class UrlServiceImpl implements UrlService {
         //2，生成唯一id
         Long id = idGenService.getId("short_url");
 
+        //短链长度6位	约 568亿	 916132832 - 56800235583
+        if (id < floor || id > ceiling) {
+            log.error("ID超过限制{}",id);
+            throw new CommonBizException(ResultCodeEnum.ID_LIMIT_ERROR.getCode(), ResultCodeEnum.ID_LIMIT_ERROR.getMsg());
+        }
         //3,将唯一id转换为62进制
         String keyword = BASE62.encode(id);
 

@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,13 +32,13 @@ public class UrlServiceTest {
     @Test
     public void genShortUrl() throws Exception {
         stopWatch.start();
-        int THREAD_NUM = 50;
+        int THREAD_NUM = 8;
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_NUM);
         for (int i = 0; i < THREAD_NUM; i++) {
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
-                    for (int i = 0; i < 500; i++) {
+                    for (int i = 0; i < 10000; i++) {
                         String shorturl = null;
                         if (i % 3 == 0) {
                             shorturl = urlService.genShortUrl("kol", "http://baidu.com/zc?name=123&&age=111&&activity=1&&tag=" + new Random().nextInt());
@@ -52,8 +53,9 @@ public class UrlServiceTest {
             });
         }
         //关闭线程池
-        Thread.sleep(1000 * 150);
-        //executorService.shutdown();
+        Thread.sleep(1000 * 500);
+        executorService.shutdown();
+        executorService.awaitTermination(1,TimeUnit.HOURS);
         stopWatch.stop();
         log.info(stopWatch.prettyPrint());
     }

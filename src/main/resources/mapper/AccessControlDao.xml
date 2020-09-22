@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blues.shorturl.dao.AccessControlDao">
+
+    <resultMap type="com.blues.shorturl.entity.AccessControl" id="AccessControlMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="bizType" column="biz_type" jdbcType="VARCHAR"/>
+        <result property="token" column="token" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="updatedTime" column="updated_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AccessControlMap">
+        select
+          id, biz_type, token, description, created_time, updated_time
+        from test.t_access_control
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AccessControlMap">
+        select
+          id, biz_type, token, description, created_time, updated_time
+        from test.t_access_control
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="AccessControlMap">
+        select
+          id, biz_type, token, description, created_time, updated_time
+        from test.t_access_control
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="bizType != null and bizType != ''">
+                and biz_type = #{bizType}
+            </if>
+            <if test="token != null and token != ''">
+                and token = #{token}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+            <if test="createdTime != null">
+                and created_time = #{createdTime}
+            </if>
+            <if test="updatedTime != null">
+                and updated_time = #{updatedTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into test.t_access_control(biz_type, token, description, created_time, updated_time)
+        values (#{bizType}, #{token}, #{description}, #{createdTime}, #{updatedTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update test.t_access_control
+        <set>
+            <if test="bizType != null and bizType != ''">
+                biz_type = #{bizType},
+            </if>
+            <if test="token != null and token != ''">
+                token = #{token},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="createdTime != null">
+                created_time = #{createdTime},
+            </if>
+            <if test="updatedTime != null">
+                updated_time = #{updatedTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from test.t_access_control where id = #{id}
+    </delete>
+
+</mapper>

@@ -60,3 +60,25 @@ CREATE TABLE `t_url_mapping` (
   COLLATE = utf8_bin
   COMMENT ='url映射表';
 
+DROP TABLE IF EXISTS `t_access_control`;
+CREATE TABLE `t_access_control` (
+  `id`           bigint(20)   NOT NULL AUTO_INCREMENT
+  COMMENT '主键',
+  `biz_type`      varchar(64)  NOT NULL
+  COMMENT '业务标识',
+  `token`     varchar(64)   NOT NULL
+  COMMENT '访问标识',
+  `description`  varchar(128) NOT NULL
+  COMMENT '描述',
+  `created_time` datetime              DEFAULT CURRENT_TIMESTAMP
+  COMMENT '创建时间',
+  `updated_time` datetime              DEFAULT CURRENT_TIMESTAMP
+  ON UPDATE CURRENT_TIMESTAMP
+  COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_biz_type_token` (`biz_type`,`token`) USING BTREE
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_bin
+  COMMENT ='访问控制表';
