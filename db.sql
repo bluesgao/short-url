@@ -33,7 +33,7 @@ CREATE TABLE `t_url_mapping` (
   `id`             bigint(20)   NOT NULL AUTO_INCREMENT
   COMMENT '主键',
   `keyword`        varchar(64)  NOT NULL
-  COMMENT '唯一标识',
+  COMMENT '短码',
   `biz_type`       varchar(32)  NOT NULL
   COMMENT '业务标识',
   `origin_url`     varchar(256) NOT NULL
