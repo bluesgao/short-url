@@ -49,7 +49,7 @@ public class UrlServiceImpl implements UrlService {
                 for (UrlMapping item : urlMappings) {
                     urlCache.put(item.getKeyword(), item);
                 }
-                log.info("loading-url-cache size:{} details:{}", urlCache.size(), JSON.toJSONString(urlCache));
+                log.info("loading-url-cache size:{}", urlCache.size());
 
             }
         }, 0, 60, TimeUnit.SECONDS);

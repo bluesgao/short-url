@@ -1,9 +1,5 @@
 package com.blues.shorturl.service;
 
-import com.blues.shorturl.entity.AccessControl;
-
-import java.util.List;
-
 /**
  * 访问控制表(AccessControl)表服务接口
  *
@@ -13,6 +9,7 @@ import java.util.List;
 public interface AccessControlService {
     /**
      * 是否有权限
+     *
      * @param bizType
      * @param token
      * @return

@@ -12,7 +12,7 @@ import java.util.List;
  * @since 2020-09-22 14:52:34
  */
 @Mapper
-public interface AccessControlDao {
+public interface AccessControlMapper {
 
     /**
      * 通过ID查询单条数据

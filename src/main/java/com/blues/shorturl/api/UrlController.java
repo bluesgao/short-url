@@ -22,12 +22,12 @@ public class UrlController {
     private AccessControlService aclService;
 
     @GetMapping("/genShortUrl.action")
-    public String genShortUrl(@RequestParam String bizType, @RequestParam String token, @RequestParam String originUrl) {
+    public String genShortUrl(@RequestParam(required = true) String bizType, @RequestParam(required = true) String token, @RequestParam(required = true) String originUrl) {
         log.info("bizType:{}, token:{},originUrl:{}", bizType, token, originUrl);
 
         String shortUrl = null;
 
-        if (aclService.canVisit(bizType, token)) {
+        if (!aclService.canVisit(bizType, token)) {
             throw new CommonBizException(ResultCodeEnum.TOKEN_ERR.getCode(), ResultCodeEnum.TOKEN_ERR.getMsg());
         }
 
@@ -43,11 +43,11 @@ public class UrlController {
     }
 
     @GetMapping("/getOriginUrl.action")
-    public String getOriginUrl(@RequestParam String bizType, @RequestParam String token, @RequestParam String keyword) {
+    public String getOriginUrl(@RequestParam(required = true) String bizType, @RequestParam(required = true) String token, @RequestParam(required = true) String keyword) {
         log.info("bizType:{}, token:{},keyword:{}", bizType, token, keyword);
 
         String originUrl = null;
-        if (aclService.canVisit(bizType, token)) {
+        if (!aclService.canVisit(bizType, token)) {
             throw new CommonBizException(ResultCodeEnum.TOKEN_ERR.getCode(), ResultCodeEnum.TOKEN_ERR.getMsg());
         }
         try {

@@ -1,7 +1,6 @@
 package com.blues.shorturl.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.blues.shorturl.dao.AccessControlDao;
+import com.blues.shorturl.dao.AccessControlMapper;
 import com.blues.shorturl.entity.AccessControl;
 import com.blues.shorturl.service.AccessControlService;
 import com.blues.shorturl.util.NamedThreadFactory;
@@ -30,7 +29,7 @@ public class AccessControlServiceImpl implements AccessControlService {
     private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("loading-acl"));
 
     @Resource
-    private AccessControlDao accessControlDao;
+    private AccessControlMapper accessControlMapper;
 
     @PostConstruct
     private void loadingCache() {
@@ -41,14 +40,14 @@ public class AccessControlServiceImpl implements AccessControlService {
                 for (AccessControl item : accessControls) {
                     aclCache.put(item.getBizType(), item.getToken());
                 }
-                log.info("loading-acl-cache size:{} details:{}", aclCache.size(), JSON.toJSONString(aclCache));
-
+                log.info("loading-acl-cache size:{}", aclCache.size());
             }
-        }, 0, 60, TimeUnit.SECONDS);
+        }, 0, 5, TimeUnit.SECONDS);
     }
 
     private List<AccessControl> getData() {
-        return accessControlDao.queryAll(null);
+        List<AccessControl> accessControls = accessControlMapper.queryAll(new AccessControl());
+        return accessControls;
     }
 
 
