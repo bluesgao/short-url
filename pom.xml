@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.blues</groupId>
-    <artifactId>shorturl</artifactId>
+    <artifactId>short-url</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>short-url</name>
     <packaging>jar</packaging>
@@ -109,7 +109,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.3.0.RELEASE</version>
                 <configuration>
-                    <mainClass>com.blues.shorturl.ShorturlApplication</mainClass>
+                    <mainClass>com.blues.shorturl.ShortUrlApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
